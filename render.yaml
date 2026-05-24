@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: isdp-platform
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: IBM_API_KEY
+        sync: false
+      - key: WXO_URL
+        value: https://api.eu-de.watson-orchestrate.cloud.ibm.com
+      - key: ENVIRONMENT_ID
+        value: ed6bfb6e-6a06-4fe6-bca5-6786215806f3

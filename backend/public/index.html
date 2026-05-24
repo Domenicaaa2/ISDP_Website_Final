@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISDP Assistant · Abraxas</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --red: #C8102E;
+            --red-light: #f5e6e9;
+            --red-mid: #e8c0c8;
+            --grey-900: #1a1a1a;
+            --grey-800: #2d2d2d;
+            --grey-600: #5c5c5c;
+            --grey-400: #9a9a9a;
+            --grey-200: #e8e6e2;
+            --grey-100: #f4f3f0;
+            --grey-50: #faf9f7;
+            --white: #ffffff;
+            --font-display: 'DM Serif Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--grey-50);
+            color: var(--grey-900);
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--grey-200);
+            padding: 0 32px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--red);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-mark svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--grey-900);
+            letter-spacing: -0.01em;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: var(--grey-400);
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-badge {
+            font-size: 11px;
+            color: var(--grey-600);
+            background: var(--grey-100);
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--grey-200);
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            background: var(--grey-800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+        }
+
+        /* MAIN */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 32px 80px;
+        }
+
+        /* HERO */
+        .hero {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .hero-left {
+            flex: 1;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--red);
+            margin-bottom: 12px;
+        }
+
+        .eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--red);
+            border-radius: 50%;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: var(--grey-900);
+            line-height: 1.15;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-sub {
+            font-size: 14px;
+            color: var(--grey-600);
+            line-height: 1.6;
+            max-width: 440px;
+        }
+
+        .hero-right {
+            display: flex;
+            gap: 10px;
+            padding-top: 8px;
+            flex-shrink: 0;
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s, transform 0.1s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: #a50d25;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--grey-800);
+            border: 1px solid var(--grey-200);
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.15s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--grey-400);
+        }
+
+        /* STATS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--grey-400);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--grey-900);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-delta {
+            font-size: 11px;
+            color: var(--grey-400);
+        }
+
+        .stat-delta.red {
+            color: var(--red);
+        }
+
+        /* SECTION */
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--grey-900);
+        }
+
+        .section-link {
+            font-size: 12px;
+            color: var(--red);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* CARDS */
+        .isdp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        .isdp-card {
+            background: var(--white);
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: box-shadow 0.15s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .isdp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .isdp-card.status-active::before {
+            background: var(--red);
+        }
+
+        .isdp-card.status-review::before {
+            background: #f59e0b;
+        }
+
+        .isdp-card.status-draft::before {
+            background: #6366f1;
+        }
+
+        .isdp-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .icon-active {
+            background: var(--red-light);
+        }
+
+        .icon-review {
+            background: #fef3c7;
+        }
+
+        .icon-draft {
+            background: #ede9fe;
+        }
+
+        .card-status {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+
+        .status-active .card-status {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .status-review .card-status {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-draft .card-status {
+            background: #ede9fe;
+            color: #4338ca;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-900);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .card-meta {
+            font-size: 11px;
+            color: var(--grey-400);
+            margin-bottom: 14px;
+        }
+
+        .steps-mini {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 14px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .step-done {
+            background: var(--red);
+        }
+
+        .step-active {
+            background: var(--red);
+            opacity: 0.4;
+        }
+
+        .step-pending {
+            background: var(--grey-200);
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: var(--grey-200);
+        }
+
+        .step-line.done {
+            background: var(--red);
+            opacity: 0.3;
+        }
+
+        .progress-section {
+            margin-bottom: 14px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--grey-600);
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--grey-100);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .fill-active {
+            background: var(--red);
+        }
+
+        .fill-review {
+            background: #f59e0b;
+        }
+
+        .fill-draft {
+            background: #6366f1;
+        }
+
+        .missing-section {
+            margin-bottom: 14px;
+        }
+
+        .missing-label {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--grey-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tag {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 500;
+            background: var(--grey-100);
+            color: var(--grey-600);
+            border: 1px solid var(--grey-200);
+        }
+
+        .tag-warn {
+            background: #fef9ec;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        .tag-ok {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--grey-100);
+        }
+
+        .footer-date {
+            font-size: 11px;
+            color: var(--grey-400);
+        }
+
+        .footer-action {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--red);
+        }
+
+        /* NEW CARD */
+        .new-card {
+            background: var(--white);
+            border: 1.5px dashed var(--grey-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            text-align: center;
+            gap: 10px;
+        }
+
+        .new-card:hover {
+            border-color: var(--red-mid);
+            background: var(--red-light);
+        }
+
+        .new-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--grey-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background 0.15s;
+        }
+
+        .new-card:hover .new-icon {
+            background: var(--red-mid);
+        }
+
+        .new-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-800);
+        }
+
+        .new-sub {
+            font-size: 12px;
+            color: var(--grey-400);
+            line-height: 1.5;
+        }
+
+        /* BOTTOM */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 14px;
+        }
+
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--grey-900);
+            margin-bottom: 16px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--grey-100);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--grey-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 12px;
+            color: var(--grey-800);
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+
+        .activity-text strong {
+            font-weight: 600;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--grey-400);
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .alert-warn {
+            background: #fef9ec;
+            border-color: #fde68a;
+        }
+
+        .alert-info {
+            background: #f0f7ff;
+            border-color: #bfdbfe;
+        }
+
+        .alert-icon {
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .alert-text {
+            font-size: 12px;
+            color: var(--grey-800);
+            line-height: 1.4;
+        }
+
+        .alert-text strong {
+            font-weight: 600;
+        }
+
+        /* CHAT PAGE */
+        .chat-page {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            flex-direction: column;
+            background: var(--grey-50);
+        }
+
+        .chat-page.open {
+            display: flex;
+        }
+
+        .chat-topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--grey-200);
+            padding: 0 24px;
+            height: 56px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--grey-600);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--grey-200);
+            background: var(--white);
+            transition: border-color 0.15s;
+        }
+
+        .chat-back:hover {
+            border-color: var(--grey-400);
+            color: var(--grey-900);
+        }
+
+        .chat-back svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .chat-project-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-900);
+            flex: 1;
+        }
+
+        .chat-block-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: var(--red-light);
+            color: var(--red);
+            font-weight: 500;
+        }
+
+        .chat-layout {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .ws-sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--grey-200);
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+
+        .ws-sec-lbl {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--grey-400);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 10px 8px 6px;
+            display: block;
+        }
+
+        .ws-bh {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 8px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background 0.12s;
+        }
+
+        .ws-bh:hover {
+            background: var(--grey-100);
+        }
+
+        .ws-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .n-done {
+            background: #EAF3DE;
+            color: #27500A;
+        }
+
+        .n-active {
+            background: var(--red);
+            color: white;
+        }
+
+        .n-pend {
+            background: var(--grey-200);
+            color: var(--grey-600);
+        }
+
+        .ws-agents {
+            padding: 2px 0 4px 28px;
+        }
+
+        .ws-agent {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            font-size: 11px;
+            color: var(--grey-600);
+        }
+
+        .ws-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .d-done {
+            background: #639922;
+        }
+
+        .d-active {
+            background: var(--red);
+        }
+
+        .d-pend {
+            background: var(--grey-200);
+        }
+
+        .a-done {
+            color: var(--grey-400);
+        }
+
+        .a-active {
+            color: var(--red);
+            font-weight: 500;
+        }
+
+        /* CHAT MAIN */
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--grey-50);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .msg {
+            display: flex;
+            gap: 10px;
+        }
+
+        .msg.user {
+            flex-direction: row-reverse;
+            align-self: flex-end;
+            max-width: 75%;
+        }
+
+        .msg.agent {
+            max-width: 85%;
+        }
+
+        .msg-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .msg.agent .msg-avatar {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .msg.user .msg-avatar {
+            background: var(--grey-800);
+            color: white;
+        }
+
+        .msg-body {
+            flex: 1;
+        }
+
+        .msg-label {
+            font-size: 10px;
+            color: var(--grey-400);
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+
+        .msg.user .msg-label {
+            text-align: right;
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--grey-900);
+        }
+
+        .msg.agent .msg-bubble {
+            background: var(--white);
+            border: 1px solid var(--grey-200);
+            border-radius: 2px 12px 12px 12px;
+            white-space: normal;
+            overflow-x: auto;
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--grey-900);
+            color: white;
+            border-radius: 12px 2px 12px 12px;
+        }
+
+        .msg.error .msg-bubble {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            border-radius: 12px;
+        }
+
+        .typing-bubble {
+            padding: 10px 14px;
+            background: var(--white);
+            border: 1px solid var(--grey-200);
+            border-radius: 2px 12px 12px 12px;
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--grey-400);
+            animation: bounce 1.2s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.4
+            }
+
+            40% {
+                transform: translateY(-5px);
+                opacity: 1
+            }
+        }
+
+        /* CHAT INPUT */
+        .chat-input-bar {
+            padding: 16px 24px;
+            background: var(--white);
+            border-top: 1px solid var(--grey-200);
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--grey-900);
+            resize: none;
+            outline: none;
+            transition: border-color 0.15s;
+            min-height: 80px;
+            max-height: 200px;
+            line-height: 1.5;
+        }
+
+        .chat-input:focus {
+            border-color: var(--red);
+        }
+
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            background: var(--red);
+            border: none;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+
+        .send-btn:hover {
+            background: #a50d25;
+        }
+
+        .send-btn:disabled {
+            background: var(--grey-400);
+            cursor: not-allowed;
+        }
+
+        .send-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* CONNECTING BAR */
+        .connecting-bar {
+            background: var(--grey-100);
+            border-bottom: 1px solid var(--grey-200);
+            padding: 8px 24px;
+            font-size: 12px;
+            color: var(--grey-600);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .conn-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            width: 480px;
+            max-width: 90vw;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: var(--grey-900);
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            font-size: 13px;
+            color: var(--grey-600);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--grey-900);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--red);
+        }
+
+        .upload-zone {
+            border: 1.5px dashed var(--grey-200);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--red-mid);
+            background: var(--red-light);
+        }
+
+        .upload-text {
+            font-size: 12px;
+            color: var(--grey-400);
+            line-height: 1.5;
+        }
+
+        .upload-text strong {
+            color: var(--red);
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--grey-100);
+        }
+
+        /* MARKDOWN IN BUBBLES */
+        .msg-bubble p {
+            margin: 4px 0;
+        }
+
+        .msg-bubble h3 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            margin: 14px 0 6px;
+            color: var(--grey-900);
+        }
+
+        .msg-bubble h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 12px 0 5px;
+            color: var(--grey-900);
+        }
+
+        .msg-bubble h5 {
+            font-size: 13px;
+            font-weight: 600;
+            margin: 10px 0 4px;
+            color: var(--grey-800);
+        }
+
+        .msg-bubble ul,
+        .msg-bubble ol {
+            padding-left: 20px;
+            margin: 6px 0;
+        }
+
+        .msg-bubble li {
+            margin: 3px 0;
+            line-height: 1.5;
+        }
+
+        .msg-bubble strong {
+            font-weight: 600;
+        }
+
+        .msg-bubble em {
+            font-style: italic;
+        }
+
+        .msg-bubble code {
+            background: var(--grey-100);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .md-table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 12px;
+            width: 100%;
+            min-width: 300px;
+        }
+
+        .md-table th,
+        .md-table td {
+            padding: 7px 10px;
+            border: 1px solid var(--grey-200);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .md-table th {
+            background: var(--grey-100);
+            font-weight: 600;
+            color: var(--grey-800);
+        }
+
+        .md-table tr:nth-child(even) td {
+            background: var(--grey-50);
+        }
+
+        /* NEXT STEP CARD */
+        .next-step-card {
+            align-self: stretch;
+            margin: 4px 0;
+        }
+
+        .next-step-inner {
+            background: linear-gradient(135deg, var(--red-light) 0%, var(--white) 60%);
+            border: 1px solid var(--red-mid);
+            border-radius: var(--radius-lg);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .next-step-meta {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .next-step-eyebrow {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--red);
+            margin-bottom: 3px;
+        }
+
+        .next-step-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-900);
+        }
+
+        .next-step-block {
+            font-size: 11px;
+            color: var(--grey-600);
+            margin-top: 2px;
+        }
+
+        .next-step-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .next-step-dismiss {
+            font-size: 12px;
+            color: var(--grey-400);
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: border-color 0.15s;
+        }
+
+        .next-step-dismiss:hover {
+            border-color: var(--grey-200);
+            color: var(--grey-600);
+        }
+
+        /* DOWNLOAD CARD (Word draft) */
+        .download-card {
+            align-self: stretch;
+            margin: 4px 0;
+        }
+
+        .download-card-inner {
+            background: linear-gradient(135deg, #f4f3f0 0%, var(--white) 60%);
+            border: 1px solid var(--grey-200);
+            border-radius: var(--radius-lg);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .download-card-meta {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .download-card-eyebrow {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--red);
+            margin-bottom: 3px;
+        }
+
+        .download-card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-900);
+        }
+
+        .download-card-sub {
+            font-size: 11px;
+            color: var(--grey-600);
+            margin-top: 2px;
+        }
+
+        .download-card-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--grey-900);
+            color: var(--white);
+            border: none;
+            padding: 9px 14px;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, opacity 0.15s;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: var(--grey-800);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        /* CHAT UPLOAD BUTTON */
+        .upload-chat-btn {
+            height: 80px;
+            width: 110px;
+            background: var(--white);
+            border: 1.5px dashed var(--grey-200);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            color: var(--grey-600);
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .upload-chat-btn:hover {
+            border-color: var(--red);
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .upload-chat-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .upload-chat-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .isdp-card:nth-child(1) {
+            animation: fadeUp 0.4s ease 0.05s both
+        }
+
+        .isdp-card:nth-child(2) {
+            animation: fadeUp 0.4s ease 0.10s both
+        }
+
+        .isdp-card:nth-child(3) {
+            animation: fadeUp 0.4s ease 0.15s both
+        }
+
+        .isdp-card:nth-child(4) {
+            animation: fadeUp 0.4s ease 0.20s both
+        }
+
+        .stat-card:nth-child(1) {
+            animation: fadeUp 0.4s ease 0.02s both
+        }
+
+        .stat-card:nth-child(2) {
+            animation: fadeUp 0.4s ease 0.06s both
+        }
+
+        .stat-card:nth-child(3) {
+            animation: fadeUp 0.4s ease 0.10s both
+        }
+
+        .stat-card:nth-child(4) {
+            animation: fadeUp 0.4s ease 0.14s both
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard-page">
+        <nav>
+            <div class="nav-logo">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 16 16" fill="none">
+                        <rect x="2" y="2" width="5" height="5" rx="1" fill="white" opacity="0.9" />
+                        <rect x="9" y="2" width="5" height="5" rx="1" fill="white" opacity="0.6" />
+                        <rect x="2" y="9" width="5" height="5" rx="1" fill="white" opacity="0.6" />
+                        <rect x="9" y="9" width="5" height="5" rx="1" fill="white" opacity="0.9" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="logo-text">ISDP Assistant</span>
+                    <span class="logo-sub"> · Abraxas</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <span class="nav-badge">Powered by IBM watsonx</span>
+                <div class="avatar">MK</div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="hero">
+                <div class="hero-left">
+                    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> AI-assisted ISDP preparation</div>
+                    <h1 class="hero-title">Your ISDP<br>workspace</h1>
+                    <p class="hero-sub">Create, track, and complete Information Security &amp; Data Protection concepts
+                        — guided
+                        by AI, validated by experts.</p>
+                </div>
+                <div class="hero-right">
+                    <button class="btn-secondary">Import existing</button>
+                    <button class="btn-primary" onclick="openModal()">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M7 2v10M2 7h10" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        New ISDP
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total ISDPs</div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-delta">3 active this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">In progress</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-delta red">2 need your input</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg. completion</div>
+                    <div class="stat-value">68%</div>
+                    <div class="stat-delta">across active projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-delta">ready for handoff</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <span class="section-title">Active ISDPs</span>
+                <span class="section-link">View all →</span>
+            </div>
+
+            <div class="isdp-grid">
+                <div class="isdp-card status-active"
+                    onclick="openChat('CareConnect+ Patient Portal','Block 3 · Gap &amp; Conflict Detection',3,10)">
+                    <div class="card-top">
+                        <div class="card-icon icon-active">🔐</div><span class="card-status">Awaiting input</span>
+                    </div>
+                    <div class="card-title">CareConnect+ Patient Portal</div>
+                    <div class="card-meta">Block 3 · Gap &amp; Conflict Detection</div>
+                    <div class="steps-mini">
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-active"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-label"><span>Progress</span><span>58%</span></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-active" style="width:58%"></div>
+                        </div>
+                    </div>
+                    <div class="missing-section">
+                        <div class="missing-label">Open items</div>
+                        <div class="tag-row">
+                            <span class="tag tag-warn">Backup docs missing</span>
+                            <span class="tag tag-warn">IAM unclear</span>
+                            <span class="tag tag-ok">Architecture ✓</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-date">Updated 2h ago</span>
+                        <span class="footer-action">Continue →</span>
+                    </div>
+                </div>
+
+                <div class="isdp-card status-review"
+                    onclick="openChat('HR Self-Service Platform','Block 4 · Evidence Validation',4,13)">
+                    <div class="card-top">
+                        <div class="card-icon icon-review">📋</div><span class="card-status">In review</span>
+                    </div>
+                    <div class="card-title">HR Self-Service Platform</div>
+                    <div class="card-meta">Block 4 · Evidence Validation</div>
+                    <div class="steps-mini">
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-active"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-label"><span>Progress</span><span>74%</span></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-review" style="width:74%"></div>
+                        </div>
+                    </div>
+                    <div class="missing-section">
+                        <div class="missing-label">Open items</div>
+                        <div class="tag-row">
+                            <span class="tag tag-warn">3 unsupported claims</span>
+                            <span class="tag tag-ok">Scope confirmed ✓</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-date">Updated yesterday</span>
+                        <span class="footer-action">Review →</span>
+                    </div>
+                </div>
+
+                <div class="isdp-card status-draft"
+                    onclick="openChat('Document Management System','Block 1 · Document Classifier',1,1)">
+                    <div class="card-top">
+                        <div class="card-icon icon-draft">🏗️</div><span class="card-status">Draft</span>
+                    </div>
+                    <div class="card-title">Document Management System</div>
+                    <div class="card-meta">Block 1 · Scope Clarification</div>
+                    <div class="steps-mini">
+                        <div class="step-dot step-done"></div>
+                        <div class="step-line done"></div>
+                        <div class="step-dot step-active"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                        <div class="step-line"></div>
+                        <div class="step-dot step-pending"></div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-label"><span>Progress</span><span>22%</span></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-draft" style="width:22%"></div>
+                        </div>
+                    </div>
+                    <div class="missing-section">
+                        <div class="missing-label">Open items</div>
+                        <div class="tag-row">
+                            <span class="tag tag-warn">Scope not confirmed</span>
+                            <span class="tag tag-warn">Supplier docs needed</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-date">Created 3 days ago</span>
+                        <span class="footer-action">Continue →</span>
+                    </div>
+                </div>
+
+                <div class="new-card" onclick="openModal()">
+                    <div class="new-icon">＋</div>
+                    <div class="new-title">Start new ISDP</div>
+                    <div class="new-sub">Upload your project documents<br>and begin the guided workflow</div>
+                </div>
+            </div>
+
+            <div class="bottom-grid">
+                <div class="panel">
+                    <div class="panel-title">Recent activity</div>
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-text"><strong>CareConnect+</strong> — Human Checkpoint 2 confirmed.
+                                Structure approved.</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">⚠️</div>
+                        <div class="activity-content">
+                            <div class="activity-text"><strong>HR Self-Service</strong> — Evidence Validation flagged 3
+                                unsupported claims.</div>
+                            <div class="activity-time">Yesterday, 14:32</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">📄</div>
+                        <div class="activity-content">
+                            <div class="activity-text"><strong>Document Management</strong> — 2 documents uploaded.
+                                Classification complete.</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🇩🇪</div>
+                        <div class="activity-content">
+                            <div class="activity-text"><strong>CareConnect+</strong> — German draft sections generated
+                                for 6 chapters.</div>
+                            <div class="activity-time">4 days ago</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title">Needs your attention</div>
+                    <div class="alert-item alert-warn">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-text"><strong>CareConnect+</strong><br>Backup documentation missing. Gap
+                            detection blocked.</div>
+                    </div>
+                    <div class="alert-item alert-warn">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-text"><strong>HR Self-Service</strong><br>3 statements could not be validated
+                            against source documents.</div>
+                    </div>
+                    <div class="alert-item alert-info">
+                        <div class="alert-icon">💬</div>
+                        <div class="alert-text"><strong>Document Management</strong><br>Scope Clarification waiting for
+                            your confirmation.</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CHAT PAGE -->
+    <div class="chat-page" id="chat-page">
+        <div class="chat-topbar">
+            <button class="chat-back" onclick="closeChat()">
+                <svg viewBox="0 0 14 14" fill="none">
+                    <path d="M9 2L3 7l6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Dashboard
+            </button>
+            <div class="chat-project-name" id="chat-title">—</div>
+            <span class="chat-block-badge" id="chat-block">—</span>
+        </div>
+
+        <div class="chat-layout">
+            <!-- SIDEBAR -->
+            <div class="ws-sidebar">
+                <span class="ws-sec-lbl">Workflow progress</span>
+
+                <div class="ws-bh" onclick="toggleSb('sb1')">
+                    <div class="ws-num" id="wn1">1</div><span>Intake &amp; Scoping</span>
+                </div>
+                <div class="ws-agents" id="sb1">
+                    <div class="ws-agent" id="wa1">
+                        <div class="ws-dot d-pend"></div>Document Classifier
+                    </div>
+                    <div class="ws-agent" id="wa2">
+                        <div class="ws-dot d-pend"></div>Document Readiness
+                    </div>
+                    <div class="ws-agent" id="wa3">
+                        <div class="ws-dot d-pend"></div>Scope Clarification
+                    </div>
+                </div>
+
+                <div class="ws-bh" onclick="toggleSb('sb2')">
+                    <div class="ws-num" id="wn2">2</div><span>Structure &amp; Reuse</span>
+                </div>
+                <div class="ws-agents" id="sb2" style="display:none">
+                    <div class="ws-agent" id="wa4">
+                        <div class="ws-dot d-pend"></div>Reference &amp; Reuse
+                    </div>
+                    <div class="ws-agent" id="wa5">
+                        <div class="ws-dot d-pend"></div>ISDP Template
+                    </div>
+                    <div class="ws-agent" id="wa6">
+                        <div class="ws-dot d-pend"></div>Standards Relevance
+                    </div>
+                </div>
+
+                <div class="ws-bh" onclick="toggleSb('sb3')">
+                    <div class="ws-num" id="wn3">3</div><span>Analysis &amp; Mapping</span>
+                </div>
+                <div class="ws-agents" id="sb3" style="display:none">
+                    <div class="ws-agent" id="wa7">
+                        <div class="ws-dot d-pend"></div>Security Extraction
+                    </div>
+                    <div class="ws-agent" id="wa8">
+                        <div class="ws-dot d-pend"></div>Schutzedarfsanalyse
+                    </div>
+                    <div class="ws-agent" id="wa9">
+                        <div class="ws-dot d-pend"></div>Section Mapping
+                    </div>
+                    <div class="ws-agent" id="wa10">
+                        <div class="ws-dot d-pend"></div>Gap &amp; Conflict Detection
+                    </div>
+                    <div class="ws-agent" id="wa11">
+                        <div class="ws-dot d-pend"></div>Clarification Questions
+                    </div>
+                </div>
+
+                <div class="ws-bh" onclick="toggleSb('sb4')">
+                    <div class="ws-num" id="wn4">4</div><span>Control &amp; Draft</span>
+                </div>
+                <div class="ws-agents" id="sb4" style="display:none">
+                    <div class="ws-agent" id="wa12">
+                        <div class="ws-dot d-pend"></div>Standards Coverage
+                    </div>
+                    <div class="ws-agent" id="wa13">
+                        <div class="ws-dot d-pend"></div>Evidence Validation
+                    </div>
+                    <div class="ws-agent" id="wa14">
+                        <div class="ws-dot d-pend"></div>German Draft
+                    </div>
+                    <div class="ws-agent" id="wa15">
+                        <div class="ws-dot d-pend"></div>Quality Assurance
+                    </div>
+                </div>
+
+                <div class="ws-bh" onclick="toggleSb('sb5')">
+                    <div class="ws-num" id="wn5">5</div><span>Closing</span>
+                </div>
+                <div class="ws-agents" id="sb5" style="display:none">
+                    <div class="ws-agent" id="wa16">
+                        <div class="ws-dot d-pend"></div>Feedback Integration
+                    </div>
+                    <div class="ws-agent" id="wa17">
+                        <div class="ws-dot d-pend"></div>Quality Scoring
+                    </div>
+                    <div class="ws-agent" id="wa18">
+                        <div class="ws-dot d-pend"></div>Final Review
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT MAIN -->
+            <div class="chat-main">
+                <div id="connecting-bar" class="connecting-bar" style="display:none">
+                    <span class="conn-dot"></span>
+                    <span id="conn-text">Connecting to Orchestrate…</span>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input-bar">
+                    <button class="upload-chat-btn" id="upload-chat-btn"
+                        onclick="document.getElementById('chat-file-input').click()" title="Dokument hochladen">
+                        <svg viewBox="0 0 16 16" fill="none">
+                            <path d="M3 11v1.5A1.5 1.5 0 004.5 14h7A1.5 1.5 0 0013 12.5V11M8 2v8M5.5 4.5L8 2l2.5 2.5"
+                                stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        Datei hochladen
+                    </button>
+                    <input type="file" id="chat-file-input" multiple accept=".pdf,.docx,.doc,.txt,.md"
+                        style="display:none" onchange="handleChatFiles(this.files)">
+                    <textarea class="chat-input" id="chat-input" placeholder="Type your message…" rows="1"
+                        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+                        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+                    <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                        <svg viewBox="0 0 16 16" fill="none">
+                            <path d="M14 2L2 7l5 1.5L14 2zM7 8.5L9 14l5-12" stroke="white" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+        <div class="modal">
+            <div class="modal-title">Start new ISDP</div>
+            <div class="modal-sub">Describe your project and upload documents. The Document Classifier will analyse what
+                you have and guide you through the full workflow.</div>
+            <div class="form-group">
+                <label class="form-label">Project / system name</label>
+                <input class="form-input" type="text" id="new-project-name" placeholder="e.g. Voting Platform v3">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Project description <span
+                        style="color:var(--grey-400);font-weight:400">(recommended)</span></label>
+                <textarea class="form-input" id="new-project-desc" rows="3"
+                    placeholder="What does this system do? Who uses it? What data does it process? Deployment context?"
+                    style="resize:vertical;min-height:72px;line-height:1.5"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Upload documents <span style="color:var(--grey-400);font-weight:400">(optional
+                        — you can also add later)</span></label>
+                <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                    <div style="font-size:22px;margin-bottom:6px">📁</div>
+                    <div class="upload-text"><strong>Click to select files</strong> or drag and drop<br>PDF (auch mit
+                        Bildern), Word, Text</div>
+                </div>
+                <input type="file" id="file-input" multiple accept=".pdf,.docx,.doc,.txt,.md" style="display:none"
+                    onchange="handleFiles(this.files)">
+                <div id="file-list" style="margin-top:8px"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="startWorkflow()">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                        <path d="M6.5 1.5v10M1.5 6.5h10" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                    Start workflow
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── CONFIG ────────────────────────────────────────────────────────────────
+        const BACKEND = '';
+
+        // ── UPLOADED FILE STATE ───────────────────────────────────────────────────
+        let uploadedFiles = [];   // [{filename, text}]
+
+        // ── AGENT-SPECIFIC INTRO MESSAGES ────────────────────────────────────────
+        // Called when advancing to a new agent. p = project name.
+        const AGENT_INTROS = [
+            // 0: Document Classifier
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Klassifiziere die hochgeladenen Dokumente streng anhand ihres tatsächlichen Inhalts (nicht des Dateinamens).\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit GENAU 8 Spalten: Nr. | Dateiname | Primärkategorie | ISDP-Relevanz | Konfidenz | Evidenz (Beleg aus Dokument) | Entscheidung | Begründung\n   - Primärkategorie: konkrete Kategorie (Architektur, IAM, Backup/BCM, Datenschutz/DPIA, Supplier/SLA, Logging/SIEM, Governance/Policy, Netzwerk, Notfall/BCP, Kryptographie, Physische Sicherheit) ODER "Nicht relevant" für ISDP-fremde Dokumente (Marketing, Angebote, Vertragsbeilagen ohne Sicherheitsbezug, persönliche Notizen etc.).\n   - ISDP-Relevanz: nur "Hoch", "Mittel", "Niedrig" oder "Keine".\n   - Konfidenz: "Hoch" / "Mittel" / "Niedrig".\n   - Evidenz: kurzes wörtliches Zitat oder konkreter Verweis aus dem Dokument (max. 120 Zeichen). Falls keine belastbare Stelle: "—".\n   - Entscheidung: **EINBEZIEHEN** oder **AUSSCHLIESSEN** — hart, ohne Mehrdeutigkeit. AUSSCHLIESSEN ist verpflichtend bei Primärkategorie "Nicht relevant", ISDP-Relevanz "Keine", oder Konfidenz "Niedrig" ohne Evidenz.\n   - Begründung: max. 1 Satz.\n2. Ausgeschlossene Dokumente: Aufzählung aller Dateinamen mit Entscheidung "AUSSCHLIESSEN" und je einem Satz Grund. Diese Dokumente werden in den Folgeschritten ignoriert.\n3. Fehlende Dokumentkategorien: nur Kategorien aufzählen, für die KEIN einbezogenes Dokument auch nur teilweise Evidenz liefert. PFLICHT: Vor jeder Meldung ALLE einbezogenen Dokumente auf Teilaussagen prüfen — Randerwähnungen gehören in einen separaten Unterpunkt "Teilweise belegt (schwach)", nicht in die Fehlend-Liste.\n\nREGELN:\n- Klare EINBEZIEHEN/AUSSCHLIESSEN-Entscheidung pro Dokument, keine Zwischenstufen.\n- Klassifikation anhand des Dokumentinhalts, nicht des Dateinamens.\n- Im Zweifel AUSSCHLIESSEN.\n- Fehlende Kategorien NUR melden, wenn kein einbezogenes Dokument auch nur teilweise dazu beiträgt.\n\nWICHTIG: Keine Einleitung, keine Zusammenfassung, keine Next-Steps. Nur die drei Abschnitte oben.`,
+            // 1: Document Readiness
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nAufgabe: Document Readiness Check für Projekt "${p}".\n\nDie Klassifizierung der Dokumente liegt bereits vor (siehe oben). Prüfe nun das Dokumentenpaket auf Vollständigkeit und Qualität für den ISDP-Prozess.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Gesamtstatus: Eine Zeile — "bereit" / "teilweise bereit" / "nicht bereit" mit 1-Satz-Begründung.\n2. Markdown-Tabelle: Verfügbare Bereiche | Abdeckungsgrad (gut/teilweise/schwach) | Wichtigste Lücke\n3. Kritische Fehlbereiche: Aufzählung der Kategorien, die für den ISDP zwingend benötigt werden, aber fehlen.\n4. Qualitätsprobleme: Falls Dokumente zu oberflächlich, widersprüchlich oder veraltet sind — kurz nennen.\n5. Empfehlung (2–3 Sätze): Kann der Nutzer mit diesem Dokumentenset in den nächsten Schritt (Scope Clarification) gehen? Frage ihn direkt, ob er noch weitere Dokumente hat oder mit dem aktuellen Set weiterfahren möchte.\n\nWICHTIG: Kein allgemeiner Einstieg, keine Wiederholung der Klassifizierungstabelle. Nur die 5 Abschnitte oben.`,
+            // 2: Scope Clarification
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Readiness-Check abgeschlossen. Kläre jetzt den Scope.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Bestätigter Scope: Markdown-Tabelle mit Spalten Aspekt | Wert | Quelle (Dokument oder abgeleitet). Aspekte: Systemname, Zweck, Deployment-Modell (SaaS/On-Prem/Hybrid), In-Scope-Komponenten, Out-of-Scope, Personendaten (ja/nein/unklar), Drittparteien.\n2. Offene Punkte: Aufzählung der Scope-Elemente, die nicht aus den Dokumenten ableitbar sind.\n3. Klärungsfragen (max. 5): Nummerierte Liste — nur Fragen, die für den ISDP-Prozess wirklich entscheidend sind.\n\nWICHTIG: Keine langen Einleitungen. Direkt mit dem Tabellenformat beginnen.`,
+            // 3: Reference & Reuse Guidance
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Scope ist geklärt. Identifiziere pro Thema, ob ISDP-Kapitel direkt referenziert, referenziert+ergänzt oder neu geschrieben werden sollen.\n\nVERBINDLICHE KAPITELLISTE — verwende AUSSCHLIESSLICH diese Titel aus der ISDS-Vorlage. Erfinde KEINE Kapitelnummern und KEINE alternativen Titel:\n\n- Zweck\n- Ausgangslage / Situationsbeschreibung\n- Sicherheitsbedarf gemäss Schutzbedarfsanalyse\n- Datenschutz / Datenschutz-Folgenabschätzung (DSFA)\n  - Rechtsgrundlagen\n  - Bearbeitung von Personendaten\n  - Zweck der Datenbearbeitung & Aufbewahrungsdauer\n  - Personendatenkategorien\n  - Art der Bearbeitung\n  - Verarbeitungsorte\n  - Subunternehmer\n- Sicherheitsrelevante Systembeschreibung\n  - Ansprechpersonen / Verantwortlichkeiten\n  - Beschreibung des Gesamtsystems\n    - Backup\n    - Nachvollziehbarkeit / Logging\n    - Störungsbehebung\n  - Beschreibung der zugrundeliegenden Technik / Technologien\n    - Architekturskizze / Kommunikationsmatrix\n    - Benutzer-, Rollen- und Berechtigungskonzept\n    - Authentifizierung\n    - Remote-Zugriff durch Dritte\n    - Bekannte Schwachstellen\n- Aufbewahrung und Archivierung\n- Notfallkonzept\n- Risikoanalyse und Schutzmassnahmen\n  - Identifizierte Risiken\n  - Schutzmassnahmen\n  - Restrisiken\n  - Risikoübersicht (aktuelle Risiken und Restrisiken)\n\nThemen-zu-Kapitel Beispiel-Mapping (zur Orientierung — Titel exakt übernehmen):\n- IAM / Zugriffsmanagement → "Benutzer-, Rollen- und Berechtigungskonzept"; "Authentifizierung"\n- Backup / BCM → "Backup"; "Notfallkonzept"\n- Logging / SIEM → "Nachvollziehbarkeit / Logging"\n- Datenschutz / DPIA → "Datenschutz / Datenschutz-Folgenabschätzung (DSFA)"; "Bearbeitung von Personendaten"\n- Lieferanten / SLA → "Subunternehmer"\n- Remote Access → "Remote-Zugriff durch Dritte"\n- Incident Handling → "Störungsbehebung"; "Notfallkonzept"\n- Schwachstellen → "Bekannte Schwachstellen"\n- Risiken / Massnahmen → "Identifizierte Risiken"; "Schutzmassnahmen"; "Restrisiken"\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Thema | Empfohlene Vorgehensweise (Referenz/Referenz+Ergänzung/Neu) | ISDP-Kapitel (exakter Titel aus Liste) | Vorgeschlagene Quelldokumente (Dateiname) | Ergänzungsbedarf\n   Themen: IAM, Backup/BCM, Logging/SIEM, Datenschutz/DPIA, Lieferanten/SLA, Remote Access, Incident Handling, Kryptographie, Physische Sicherheit, Governance/Policy.\n   - In der Spalte "ISDP-Kapitel" steht der EXAKTE Titel aus der Liste oben. Mehrere Kapitel mit "; " trennen.\n   - Wenn für ein Thema KEIN passendes Kapitel existiert, schreibe "— kein passendes Kapitel in der Vorlage" und NICHT einen erfundenen Titel.\n2. Priorisierung: Top 3 Kapitel mit Begründung — wieder mit EXAKTEN Titeln aus der Liste.\n3. Wiederverwendungspotenzial: Welche bestehenden Dokumente liefern den grössten direkten Nutzen für den ISDP?\n\nREGELN:\n- VERBOTEN: Eigene Kapitelnamen, Kombinations-Titel (z.B. "Zugriffs- und Rollenmanagement"), erfundene Kapitelnummern ("Kap. 4.2 – ...") oder Übersetzungen aus anderen Standards (ISO, NIST). Standards-Bezüge gehören in den Standards-Agenten, nicht hier.\n- ERLAUBT: Mehrere Kapitelnamen pro Thema, getrennt durch "; ".\n- Quelldokumente immer beim exakten Dateinamen referenzieren.\n\nWICHTIG: Vor dem Antworten prüfen: Steht JEDER genannte Kapiteltitel WORTGLEICH in der Liste oben? Falls nein → korrigieren oder "— kein passendes Kapitel in der Vorlage" eintragen.`,
+            // 4: ISDP Template / Structure
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Referenz- und Wiederverwendungsempfehlungen liegen vor. Bestimme die Zielstruktur des ISDP.\n\nVERBINDLICHE KAPITELLISTE — verwende AUSSCHLIESSLICH diese 30 Titel aus der ISDS-Vorlage. JEDES Kapitel MUSS in der Tabelle (Abschnitt 1) erscheinen — auch wenn der Status "Nicht anwendbar" ist. Kein Kapitel weglassen, keine erfindenden Titel:\n\n1. Zweck\n2. Ausgangslage / Situationsbeschreibung\n3. Sicherheitsbedarf gemäss Schutzbedarfsanalyse\n4. Datenschutz / Datenschutz-Folgenabschätzung (DSFA)\n5. Rechtsgrundlagen\n6. Bearbeitung von Personendaten\n7. Zweck der Datenbearbeitung & Aufbewahrungsdauer\n8. Personendatenkategorien\n9. Art der Bearbeitung\n10. Verarbeitungsorte\n11. Subunternehmer\n12. Sicherheitsrelevante Systembeschreibung\n13. Ansprechpersonen / Verantwortlichkeiten\n14. Beschreibung des Gesamtsystems\n15. Backup\n16. Nachvollziehbarkeit / Logging\n17. Störungsbehebung\n18. Beschreibung der zugrundeliegenden Technik / Technologien\n19. Architekturskizze / Kommunikationsmatrix\n20. Benutzer-, Rollen- und Berechtigungskonzept\n21. Authentifizierung\n22. Remote-Zugriff durch Dritte\n23. Bekannte Schwachstellen\n24. Aufbewahrung und Archivierung\n25. Notfallkonzept\n26. Risikoanalyse und Schutzmassnahmen\n27. Identifizierte Risiken\n28. Schutzmassnahmen\n29. Restrisiken\n30. Risikoübersicht (aktuelle Risiken und Restrisiken)\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Nr. | Kapitelname | Status (Pflicht/Optional/Nicht anwendbar/Referenzbasiert/Projektspezifisch) | Begründung | Erwarteter Inhaltstyp | Wahrscheinliche Hauptquelle\n   - GENAU 30 Zeilen, in der Reihenfolge der Liste oben, mit den Nummern 1–30 aus der Liste.\n   - Kapitelname WORTGLEICH übernehmen — keine Umformulierungen, keine Kürzungen, keine zusätzlichen Wörter.\n   - Auch das Kapitel "Sicherheitsbedarf gemäss Schutzbedarfsanalyse" MUSS enthalten sein (Nr. 3) — dies ist KEIN Duplikat zur Schutzbedarfsanalyse-Phase, sondern das Kapitel im ISDS, in dem die Ergebnisse dargestellt werden.\n2. Pflichtkapitel (Zusammenfassung): Aufzählung der Kapitel mit Status "Pflicht" — wieder mit EXAKTEN Titeln aus der Liste.\n3. Nicht anwendbare Kapitel: Aufzählung der Kapitel mit Status "Nicht anwendbar" und je 1-Satz-Begründung.\n\nREGELN:\n- VERBOTEN: Kapitel weglassen, Kapitel umbenennen, Kapitel zusammenfassen.\n- ERLAUBT: Status "Nicht anwendbar" mit Begründung — aber das Kapitel bleibt in der Tabelle.\n- Vor dem Antworten Tabelle zählen: Es müssen GENAU 30 Zeilen sein. Falls nicht: fehlende Kapitel ergänzen.\n\nWICHTIG: Keine langen Einleitungen. Direkt mit der Tabelle beginnen.`,
+            // 5: Standards Relevance
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Kapitelstruktur definiert. Prüfe, welche Standards und Kontrollbereiche relevant sind.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Kontrollbereich | Relevanter Standard (ISO 27001/27002 Kap., NIST CSF etc.) | Relevanzgrad (hoch/mittel/niedrig) | Begründung | Betroffene ISDP-Kapitel\n   Kontrollbereiche: IAM, Logging/Monitoring, Backup/BCM, Datenschutz, Lieferanten, Incident Handling, Kryptographie, Netzwerksicherheit, Physische Sicherheit, Governance.\n2. Kritische Standards-Gaps: Welche Anforderungen sind besonders schlecht abgedeckt?\n3. Empfehlung: Welche 3 Kontrollbereiche haben höchste Priorität für dieses Projekt?\n\nWICHTIG: Immer konkrete Standard-Kapitel angeben (z.B. ISO 27001 A.9 – Zugangskontrolle). Kein Englisch.`,
+            // 6: Security Fact Extraction
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Scope und Struktur sind geklärt. Extrahiere alle sicherheits- und datenschutzrelevanten Fakten aus den Dokumenten.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Finding-ID | Thema | Aussage | Quelldokument (Dateiname) | Evidenztyp (explizit/abgeleitet) | Konfidenz (hoch/mittel/niedrig)\n   - Mindestens 10 Findings, falls Dokumente vorhanden.\n2. Starke Bereiche: Aufzählung der gut belegten Sicherheitsbereiche.\n3. Schwache Bereiche: Aufzählung der Bereiche mit wenig oder keiner Evidenz.\n4. Hinweis (am Ende, als eigener Abschnitt mit Überschrift "**Hinweis**"): Genauer Wortlaut:\n   _Diese Auflistung dient ausschliesslich zur Information. Sie zeigt, welche sicherheits- und datenschutzrelevanten Fakten aus den hochgeladenen Dokumenten extrahiert wurden. Es besteht zu diesem Zeitpunkt kein Handlungsbedarf — die Findings werden in den folgenden Schritten (Schutzbedarfsanalyse, Section Mapping, Gap & Conflict Detection) weiterverarbeitet._\n\nWICHTIG: Jede Aussage muss einem konkreten Quelldokument zugeordnet sein. Keine generischen Aussagen ohne Bezug zu den Dokumenten. Der Hinweis MUSS am Ende der Antwort stehen, exakt im obigen Wortlaut.`,
+            // 7: Schutzbedarfsanalyse
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Faktenextraktion abgeschlossen. Führe die Schutzbedarfsanalyse auf DRAFT-Niveau durch — pragmatisch, keine formale Nachweis-Logik.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Schutzziel | Stufe (hoch/mittel/niedrig/unklar) | Begründung | Evidenzbasis (Finding-IDs) | Konfidenz\n   Schutzziele: Vertraulichkeit, Integrität, Verfügbarkeit, Nachvollziehbarkeit, Datenschutz, Datenverlustrisiko, Aufbewahrung/Archivierung.\n2. Gesamtprofil: Ein Satz pro Schutzziel-Kombination — wie hoch ist das Gesamtrisiko?\n3. Offene Punkte (EINMALIG, MAX. 3 Einträge): Nur fachlich-inhaltliche Annahmen aufzählen, die direkt die Stufeneinordnung beeinflussen würden. Falls Antworten des Nutzers bereits im bisherigen Verlauf vorliegen, diese als beantwortet behandeln, in die Tabelle/Begründung einarbeiten und NICHT erneut auflisten. Keine formalen Nachweise/Belege/Freigaben verlangen — dies ist ein Entwurf.\n\nREGELN:\n- Begründungen aus den Dokumenten ableiten, nicht generisch formulieren.\n- KEIN Abschluss-Satz im Stil "Nach Vorlage dieser Nachweise kann die Schutzbedarfsanalyse finalisiert werden". KEIN Hinweis auf formale Bestätigung, Nachweis-Pflicht oder Sign-off — der Output ist ein Draft, kein Freigabedokument.\n- Wenn alle relevanten Annahmen aus den bisherigen Antworten ableitbar sind, schreibe unter "Offene Punkte" nur: "Keine weiteren offenen Punkte — Schutzbedarfsentwurf vollständig."\n- Schleifen vermeiden: Gleiche Frage nie zweimal stellen. Wenn der Nutzer eine Annahme bestätigt hat, gilt sie als gesetzt.\n\nWICHTIG: Maximal drei offene Punkte, kein formaler Finalisierungs-Hinweis, keine Aufforderung zu Nachweisen.`,
+            // 8: ISDP Section Mapping
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Faktenextraktion und Schutzbedarfsanalyse abgeschlossen. Mappe die extrahierten Findings in die richtigen ISDP-Kapitel.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Kap.-Nr. | Kapitelname | Gemappte Finding-IDs | Kernaussagen | Quellenangabe | Mapping-Konfidenz | Offene Inhaltslücken\n2. Gut abgedeckte Kapitel: Aufzählung mit Begründung.\n3. Schwach abgedeckte Kapitel: Aufzählung mit konkreten Lücken.\n4. Nicht zuordbare Findings: Falls vorhanden — welche Findings passen in kein Kapitel?\n\nWICHTIG: Kapitel immer mit Nummer angeben. Quellenangaben immer mit Dateinamen.`,
+            // 9: Gap & Conflict Detection
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Section-Mapping abgeschlossen. Prüfe das gemappte Material auf Lücken, Widersprüche und schwach belegte Stellen.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Issue-ID | Typ (Lücke/Widerspruch/Ambiguität/Schwache Evidenz/Referenz fehlt/Human-Bestätigung nötig) | Betroffenes Kapitel | Beschreibung | Empfohlene Lösung | Priorität (hoch/mittel/niedrig)\n2. Kritische Issues (Priorität hoch): Zusammenfassung der dringendsten Probleme.\n3. Empfehlung: Was muss vor der Entwurfsphase zwingend geklärt werden?\n\nWICHTIG: Issues nummerieren (GAP-001, CON-001 etc.). Konkrete Kapitelreferenzen angeben.`,
+            // 10: Clarification Questions
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Gap- und Konfliktanalyse abgeschlossen. Formuliere die wichtigsten Klärungsfragen für den Projektverantwortlichen.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Frage-ID | Betroffenes Kapitel | Frage | Warum nötig | Erwartete Antwortform | Zielrolle | Priorität\n2. Kritische Blocker (müssen vor nächstem Schritt beantwortet werden): Aufzählung der Frage-IDs mit 1-Satz-Begründung.\n3. Minimales Fragepaket: Die 3 wichtigsten Fragen, falls der Nutzer nur wenig Zeit hat.\n\nWICHTIG: Fragen nummerieren (Q-001, Q-002 etc.). Keine redundanten Fragen. Jede Frage muss einen konkreten Prozessschritt entsperren.`,
+            // 11: Standards Coverage Check
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Mapping und Gap-Analyse abgeschlossen. Prüfe ob das gemappte ISDP-Material die relevanten Kontrollbereiche ausreichend abdeckt.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Kontrollbereich | Relevanzgrad (hoch/mittel/niedrig) | Coverage-Status (ausreichend/teilweise/schwach/keine Evidenz/nicht anwendbar) | Betroffene ISDP-Kapitel | Empfohlener nächster Schritt\n2. Kritische Coverage-Lücken: Welche hochrelevanten Bereiche sind schwach abgedeckt?\n3. Gesamtbewertung: Kann mit der Entwurfsphase begonnen werden, oder braucht es zuerst mehr Input?\n\nWICHTIG: Kontrollbereiche mit Standard-Referenzen versehen (z.B. ISO 27001 A.9).`,
+            // 12: Evidence Validation
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Standards-Coverage-Check abgeschlossen. Validiere, ob die extrahierten und gemappten Aussagen durch die Quelldokumente belegt sind.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Validierungs-ID | Aussage | Status (belegt/teilweise/schwach/unbelegt/widersprüchlich) | Quellenangabe (Dateiname) | Begründung | Empfohlene Aktion\n2. Gut belegte Bereiche: Aufzählung.\n3. Problematische Aussagen: Welche müssen vor dem Entwurf bereinigt oder bestätigt werden?\n\nWICHTIG: Jede Validierung mit konkreter Quellenangabe. Keine generischen Aussagen.`,
+            // 13: German Draft Generation
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Validation abgeschlossen. Erstelle deutsche Kapitelentwürfe, die EXAKT in die offizielle ISDS-Vorlage eingefügt werden können.\n\nAUSGABEFORMAT (strikt einhalten):\nPro Kapitel ein Block, eingeleitet mit "## " gefolgt vom exakten Kapitelnamen (siehe Liste unten). Direkt darunter folgt der Entwurfstext.\n\nBeispiel:\n## Zweck\nDas ISDS-Konzept beschreibt die Informationssicherheits- und Datenschutzanforderungen für [System X]. Es legt fest, welche Risiken identifiziert und welche Schutzmassnahmen umgesetzt werden.\n\n## Ausgangslage / Situationsbeschreibung\n[Entwurfstext basierend auf den Dokumenten]\n\nVERWENDE GENAU DIESE KAPITELNAMEN UND -REIHENFOLGE:\n\n## Zweck\n## Ausgangslage / Situationsbeschreibung\n## Sicherheitsbedarf gemäss Schutzbedarfsanalyse\n## Datenschutz / Datenschutz-Folgenabschätzung (DSFA)\n## Rechtsgrundlagen\n## Bearbeitung von Personendaten\n## Zweck der Datenbearbeitung & Aufbewahrungsdauer\n## Personendatenkategorien\n## Art der Bearbeitung\n## Verarbeitungsorte\n## Subunternehmer\n## Sicherheitsrelevante Systembeschreibung\n## Ansprechpersonen / Verantwortlichkeiten\n## Beschreibung des Gesamtsystems\n## Backup\n## Nachvollziehbarkeit / Logging\n## Störungsbehebung\n## Beschreibung der zugrundeliegenden Technik / Technologien\n## Architekturskizze / Kommunikationsmatrix\n## Benutzer-, Rollen- und Berechtigungskonzept\n## Authentifizierung\n## Remote-Zugriff durch Dritte\n## Bekannte Schwachstellen\n## Aufbewahrung und Archivierung\n## Notfallkonzept\n## Risikoanalyse und Schutzmassnahmen\n## Identifizierte Risiken\n## Schutzmassnahmen\n## Restrisiken\n## Risikoübersicht (aktuelle Risiken und Restrisiken)\n\nREGELN:\n1. Verwende EXAKT diese Kapitelnamen (gleiche Schreibweise, gleiche Sonderzeichen). Keine Nummerierung, kein "Kap. X.X" vorne dran.\n2. Wenn für ein Kapitel KEINE belastbaren Informationen aus den Dokumenten und vorherigen Agentenanalysen vorliegen, schreibe NUR genau folgenden Satz unter dem Kapitelnamen:\n   _Keine Informationen aus den hochgeladenen Dokumenten verfügbar._\n3. Wenn nur teilweise Informationen vorliegen: dokumentiere was bekannt ist, danach eine Zeile "**Offene Punkte:** ..." mit den Lücken.\n4. Schreibe formell, governance-orientiert, faktenbasiert. Keine Chatbot-Floskeln, keine Einleitung, keine Zusammenfassung am Ende.\n5. Jedes Kapitel muss in der Antwort vorkommen — auch wenn keine Informationen vorliegen (dann mit Marker aus Regel 2).\n6. Tabellen, Aufzählungen und Fettdruck sind erlaubt, wenn sie den Inhalt klarer machen.\n7. QUELLENPFLICHT: Jeder Aussagesatz bzw. jeder Absatz endet mit einer Quellenangabe in Klammern. Erlaubte Formen:\n   - "(Quelle: <Dateiname.ext>)" für eine konkrete Aussage aus einem hochgeladenen Dokument\n   - "(Quellen: <a.pdf>, <b.docx>)" wenn mehrere Dokumente die Aussage stützen\n   - "(abgeleitet aus: <Dateiname.ext>)" wenn die Aussage nicht wörtlich, sondern interpretierend abgeleitet wurde\n   - "(aus Schutzbedarfsanalyse)", "(aus Security Extraction)", "(aus Section Mapping)" etc., wenn die Aussage aus einer vorherigen Agentenanalyse stammt\n   - "(Annahme — zu bestätigen)" NUR wenn explizit als ungeprüfte Annahme gekennzeichnet werden muss\n   Dateinamen GENAU so schreiben, wie sie im Kontext-Block "Hochgeladene Dokumente" oder in den vorherigen Agentenausgaben erscheinen. Keine erfundenen oder paraphrasierten Dateinamen. Bei Aufzählungen reicht eine Quellenangabe pro Listenpunkt. Innerhalb von Tabellen genügt eine eigene "Quelle"-Spalte.\n8. Pflicht zur Vollständigkeit: Wenn im Kontext-Block oder in einer vorherigen Agentenausgabe Information zu einem Kapitel vorliegt — auch nur in einem Nebensatz oder einer Tabellenzeile — MUSS sie ins Kapitel einfliessen. Den MISSING-MARKER aus Regel 2 nur verwenden, wenn nach Prüfung des gesamten Kontexts und aller Agentenausgaben (Security Extraction, Schutzbedarfsanalyse, Section Mapping, Evidence Validation) wirklich nichts vorliegt.\n\nWICHTIG: Beginne deine Antwort direkt mit "## Zweck". Keine Einleitung davor, keine Zusammenfassung danach.`,
+            // 14: Quality Assurance
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Deutsche Entwürfe generiert. Prüfe die Qualität der Kapitelentwürfe.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: QA-ID | Betroffenes Kapitel | Problemtyp (vage/generisch/Wiederholung/oberflächlich/inkonsistent) | Problematische Stelle | Warum schwach | Empfohlene Aktion | Priorität\n2. Grösste Qualitätsschwächen: Aufzählung der 3 kritischsten Probleme.\n3. Riskante Kapitel: Welche Kapitel sind für das Endprodukt besonders problematisch?\n4. Starke Kapitel: Was ist bereits gut und muss nicht mehr überarbeitet werden?\n\nWICHTIG: Konkrete Textstellen zitieren, nicht generisch beschreiben. Priorität klar benennen.`,
+            // 15: Feedback Integration
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". QA-Review abgeschlossen. Verarbeite das Expertenfeedback und integriere Korrekturen.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit Spalten: Feedback-ID | Betroffenes Kapitel/Thema | Feedbacktyp (redaktionell/faktisch/neue Info/Scope-Änderung/Bestätigung) | Zusammenfassung | Empfohlene Aktion | Braucht Re-Run? | Zielagent falls Re-Run | Status\n2. Kritische Änderungen: Welche Feedback-Items haben den grössten Einfluss auf das Ergebnis?\n3. Sofortmassnahmen: Was kann direkt integriert werden ohne weiteren Agent-Durchlauf?\n\nWICHTIG: Feedback-Items nummerieren (FB-001 etc.). Status klar angeben (offen/integriert/zurückgestellt).`,
+            // 16: Quality Scoring
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Feedback integriert. Erstelle ein strukturiertes Quality-Scoring für das ISDP-Paket.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Scoring-Tabelle: Dimension | Score (0–100) | Begründung | Hauptschwäche\n   Dimensionen: Vollständigkeit, Evidenzstärke, Klarheit, Spezifität, Konsistenz, Standards-Coverage.\n2. Gesamtbewertung: Gesamt-Score (0–100) mit Bandbreite (schwach <60 / akzeptabel 60–79 / stark ≥80) und Open-Issues-Last (niedrig/mittel/hoch).\n3. Haupttreiber: Was hat den Score am stärksten beeinflusst (positiv und negativ)?\n4. Empfehlung: Weiter zum Final Review / Mit Vorsicht weiter / Zuerst überarbeiten — mit Begründung.\n\nWICHTIG: Scores müssen durch konkrete Beobachtungen begründet sein. Kein Englisch.`,
+            // 17: Final Review
+            (p) => `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nProjekt: "${p}". Quality-Scoring abgeschlossen. Führe das finale Review-Gate durch.\n\nAUSGABEFORMAT (strikt einhalten):\n1. Gate-Checkliste: Markdown-Tabelle mit Spalten: Kriterium | Status (erfüllt/teilweise/nicht erfüllt) | Bemerkung\n   Kriterien: Alle Pflichtkapitel vorhanden, Offene Issues dokumentiert, Evidenz/Traceability vorhanden, Human-Feedback integriert, Qualitätsscore akzeptabel, Sprachqualität (Deutsch, formell), Konsistenz über alle Kapitel.\n2. Gate-Entscheid: **Bereit für Handoff** / **Bereit mit offenen Punkten** / **Noch nicht bereit** — mit 2–3 Sätzen Begründung.\n3. Was ist gut: Aufzählung der Stärken.\n4. Was bleibt riskant: Aufzählung der Restrisiken.\n5. Handoff-Empfehlung: An wen geht das Paket, und was muss der Empfänger wissen?\n\nWICHTIG: Gate-Entscheid klar und ohne Doppeldeutigkeit formulieren.`,
+        ];
+
+        // ── AGENT SEQUENCE (ordered workflow) ────────────────────────────────────
+        const AGENT_SEQUENCE = [
+            { name: 'Document Classifier', block: 1, blockName: 'Intake & Scoping' },
+            { name: 'Document Readiness', block: 1, blockName: 'Intake & Scoping' },
+            { name: 'Scope Clarification', block: 1, blockName: 'Intake & Scoping' },
+            { name: 'Reference & Reuse', block: 2, blockName: 'Structure & Reuse' },
+            { name: 'ISDP Template', block: 2, blockName: 'Structure & Reuse' },
+            { name: 'Standards Relevance', block: 2, blockName: 'Structure & Reuse' },
+            { name: 'Security Extraction', block: 3, blockName: 'Analysis & Mapping' },
+            { name: 'Schutzedarfsanalyse', block: 3, blockName: 'Analysis & Mapping' },
+            { name: 'ISDP Section Mapping', block: 3, blockName: 'Analysis & Mapping' },
+            { name: 'Gap & Conflict Detection', block: 3, blockName: 'Analysis & Mapping' },
+            { name: 'Clarification Questions', block: 3, blockName: 'Analysis & Mapping' },
+            { name: 'Standards Coverage', block: 4, blockName: 'Control & Draft' },
+            { name: 'Evidence Validation', block: 4, blockName: 'Control & Draft' },
+            { name: 'German Draft', block: 4, blockName: 'Control & Draft' },
+            { name: 'Quality Assurance', block: 4, blockName: 'Control & Draft' },
+            { name: 'Feedback Integration', block: 5, blockName: 'Closing' },
+            { name: 'Quality Scoring', block: 5, blockName: 'Closing' },
+            { name: 'Final Review', block: 5, blockName: 'Closing' },
+        ];
+
+        const AGENT_IDS = {
+            'Document Classifier': '62b4d465-83d9-4970-98ff-67b0fc5d2eac',
+            'Document Readiness': '9bef9f25-5716-4a5f-8567-cc765212cef1',
+            'Scope Clarification': 'f6d9fa20-3446-4686-8f3d-3699aa2241f9',
+            'Reference & Reuse': 'ea87b0ee-3583-4eb9-a07e-b94f3c3ceb00',
+            'ISDP Template': '774ac183-f358-44a8-b442-352efde87553',
+            'Standards Relevance': '678f2f54-33f4-402d-b135-792649d1baa1',
+            'Security Extraction': '0a2fd43e-7b34-4dc8-86a9-cc979dc23c60',
+            'Schutzedarfsanalyse': '0577de14-755d-47b9-8d84-3533f7da82df',
+            'ISDP Section Mapping': '40a80939-1284-46c9-9afb-9c1db6f2eea8',
+            'Gap & Conflict Detection': '3485704a-4657-4eb6-862c-5800e682f912',
+            'Clarification Questions': 'e3911c32-b005-4b3c-9d3c-b0be66efcecb',
+            'Standards Coverage': '9fa4e134-1bf7-4ba8-ad7b-7221e00086b4',
+            'Evidence Validation': 'a0c63131-175a-4b30-bf1f-9bde0dd02d80',
+            'German Draft': '04dcedb9-19c9-459d-a7a1-c65f9ca46ff0',
+            'Quality Assurance': '39f293bb-db72-45e4-8319-9b493da207f6',
+            'Feedback Integration': '45d63794-a3ef-4d4c-afbd-de67705f72e5',
+            'Quality Scoring': '9c8675e1-1ac3-4f85-a5d7-837d65d1684f',
+            'Final Review': '1595378f-4ac2-4086-8359-e7754b703c31',
+        };
+        const AGENT_NAMES = Object.keys(AGENT_IDS);
+
+        // ── STATE ─────────────────────────────────────────────────────────────────
+        let currentThreadId = null;
+        let currentAgentId = AGENT_IDS['Document Classifier'];
+        let currentAgentIndex = 0;   // index into AGENT_SEQUENCE
+        let currentProject = null;
+        let projectDesc = '';  // description from modal, persists across agents
+        let agentOutputHistory = [];  // [{name, output}] — grows as agents complete
+        let isSending = false;
+
+        // ── MODAL ─────────────────────────────────────────────────────────────────
+        function openModal() {
+            document.getElementById('new-project-name').value = '';
+            document.getElementById('new-project-desc').value = '';
+            document.getElementById('file-list').innerHTML = '';
+            uploadedFiles = [];
+            document.getElementById('modal').classList.add('open');
+        }
+        function closeModal() { document.getElementById('modal').classList.remove('open'); }
+        function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+
+        const SUPPORTED_EXTS = ['.pdf', '.docx', '.doc', '.txt', '.md'];
+
+        async function handleFiles(files) {
+            // Accumulate files — do NOT reset uploadedFiles so multiple folder picks work
+            const listEl = document.getElementById('file-list');
+
+            for (const file of Array.from(files)) {
+                // Skip duplicates (same filename already added)
+                if (uploadedFiles.some(f => f.filename === file.name)) continue;
+
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+                const safeId = 'status-' + file.name.replace(/[^a-z0-9]/gi, '_');
+                const row = document.createElement('div');
+                row.style.cssText = 'padding:4px 0;display:flex;align-items:center;gap:6px;font-size:12px;color:#2d2d2d';
+
+                if (!SUPPORTED_EXTS.includes(ext)) {
+                    row.innerHTML = `<span>🚫</span><span>${file.name}</span><span style="color:#991b1b">Bilddateien (PNG/JPG/etc.) direkt hochladen wird nicht unterstützt. Speichere als PDF oder Word und lade nochmals hoch.</span>`;
+                    listEl.appendChild(row);
+                    continue;
+                }
+
+                row.innerHTML = `<span>📄</span><span>${file.name}</span><span id="${safeId}" style="color:#9a9a9a">Wird hochgeladen…</span>`;
+                listEl.appendChild(row);
+
+                try {
+                    const fd = new FormData();
+                    fd.append('file', file);
+                    const res = await fetch(`${BACKEND}/api/upload`, { method: 'POST', body: fd });
+                    const data = await res.json();
+                    if (res.ok) {
+                        uploadedFiles.push({ filename: data.filename, text: data.text });
+                        document.getElementById(safeId).textContent = `✓ ${data.chars} Zeichen extrahiert`;
+                        document.getElementById(safeId).style.color = '#166534';
+                    } else {
+                        document.getElementById(safeId).textContent = '⚠ Upload fehlgeschlagen';
+                        document.getElementById(safeId).style.color = '#991b1b';
+                    }
+                } catch (e) {
+                    document.getElementById(safeId).textContent = '⚠ ' + e.message;
+                    document.getElementById(safeId).style.color = '#991b1b';
+                }
+            }
+        }
+
+        // ── START WORKFLOW ────────────────────────────────────────────────────────
+        async function startWorkflow() {
+            const name = document.getElementById('new-project-name').value.trim();
+            const desc = document.getElementById('new-project-desc').value.trim();
+            if (!name) { alert('Bitte Projektname eingeben.'); return; }
+            closeModal();
+            currentProject = name;
+            projectDesc = desc;
+            agentOutputHistory = [];
+            currentThreadId = null;
+            currentAgentIndex = 0;
+            currentAgentId = AGENT_IDS['Document Classifier'];
+            openChatPage(name, 'Block 1 · Document Classifier', 1, 1);
+
+            let msg = `SPRACHE: Antworte ausschliesslich auf Deutsch. Kein Englisch.\n\nNeues ISDP-Projekt: "${name}".`;
+            if (desc) {
+                msg += `\n\nProjektbeschreibung des Nutzers:\n"${desc}"`;
+            }
+
+            if (uploadedFiles.length > 0) {
+                msg += `\n\nDer Nutzer hat ${uploadedFiles.length} Dokument(e) hochgeladen:\n`;
+                for (const f of uploadedFiles) {
+                    msg += `\n--- ${f.filename} ---\n${f.text}\n`;
+                }
+                msg += `\n\nAufgabe: Klassifiziere jede der obigen Dateien streng anhand ihres tatsächlichen Inhalts (nicht des Dateinamens).\n\nAUSGABEFORMAT (strikt einhalten):\n1. Markdown-Tabelle mit GENAU 8 Spalten: Nr. | Dateiname | Primärkategorie | ISDP-Relevanz | Konfidenz | Evidenz (Beleg aus Dokument) | Entscheidung | Begründung\n   - Primärkategorie: konkrete Kategorie (Architektur, IAM, Backup/BCM, Datenschutz/DPIA, Supplier/SLA, Logging/SIEM, Governance/Policy, Netzwerk, Notfall/BCP, Kryptographie, Physische Sicherheit) ODER "Nicht relevant" für ISDP-fremde Dokumente (Marketing, Angebote, Vertragsbeilagen ohne Sicherheitsbezug, persönliche Notizen, generische Produktbeschreibungen etc.).\n   - ISDP-Relevanz: nur "Hoch", "Mittel", "Niedrig" oder "Keine".\n   - Konfidenz: "Hoch" / "Mittel" / "Niedrig" — wie sicher bist du, dass die Einstufung stimmt (abhängig von Klarheit und Umfang des Inhalts).\n   - Evidenz: kurzes wörtliches Zitat oder konkreter Verweis aus dem Dokument (max. 120 Zeichen), das die Einstufung belegt. Falls keine belastbare Stelle vorhanden: "—".\n   - Entscheidung: **EINBEZIEHEN** oder **AUSSCHLIESSEN** — hart, ohne Mehrdeutigkeit. AUSSCHLIESSEN ist verpflichtend, wenn mindestens eines zutrifft: Primärkategorie "Nicht relevant", ISDP-Relevanz "Keine", oder Konfidenz "Niedrig" ohne Evidenz.\n   - Begründung: max. 1 Satz.\n2. Ausgeschlossene Dokumente: Aufzählung aller Dateinamen mit Entscheidung "AUSSCHLIESSEN" und je einem Satz Grund. Diese Dokumente werden in den Folgeschritten ignoriert und fliessen NICHT in das ISDP ein.\n3. Fehlende Dokumentkategorien: Aufzählung der ISDP-relevanten Kategorien (Architektur, IAM, Backup/BCM, Datenschutz/DPIA, Supplier/SLA, Logging/SIEM, Governance/Policy, Netzwerk, Notfall/BCP), für die in KEINEM einbezogenen Dokument belastbare Evidenz vorliegt. PFLICHT: Bevor du eine Kategorie als fehlend meldest, prüfe ALLE einbezogenen Dokumente auf relevante Aussagen — auch Teil- oder Randerwähnungen zählen als "teilweise vorhanden". Solche Fälle gehören NICHT in die Fehlend-Liste, sondern in einen separaten Unterpunkt "Teilweise belegt (schwach)".\n4. Empfehlung (2–3 Sätze): Kann der Nutzer mit den EINBEZOGENEN Dokumenten sinnvoll weiterfahren? Frage direkt: Hat er weitere Dokumente zu den fehlenden Kategorien, oder möchte er mit dem aktuellen Material fortfahren — mit dem Hinweis, dass fehlende Kategorien zu leeren oder schwach belegten ISDP-Kapiteln führen werden.\n\nREGELN:\n- Jedes Dokument bekommt eine klare EINBEZIEHEN/AUSSCHLIESSEN-Entscheidung. Keine Zwischenstufen, kein "evtl. relevant".\n- Klassifikation ausschliesslich anhand des Dokumentinhalts, nicht des Dateinamens.\n- Im Zweifel AUSSCHLIESSEN — lieber ein Dokument zu wenig als ein themenfremdes Dokument im ISDP.\n- Fehlende Kategorien NUR melden, wenn KEIN einbezogenes Dokument auch nur teilweise dazu beiträgt.\n\nWICHTIG: Keine lange Einleitung, keine weiteren Abschnitte ausser den vier oben.`;
+            } else {
+                msg += `\n\nDer Nutzer hat noch keine Dokumente hochgeladen.\n\nAufgabe: Stelle dich kurz vor (1–2 Sätze, was du als Document Classifier tust). Erkläre, welche Dokumenttypen für das ISDP besonders wertvoll sind (z.B. Architektur, IAM, Backup/BCM, Datenschutz, Supplier/SLA, Logging, Governance/Policy). Bitte den Nutzer, die relevanten Projektdokumente hochzuladen — er kann dies über den Upload-Button im Chat tun. Falls noch keine Projektbeschreibung vorhanden ist, frage kurz danach.`;
+            }
+
+            await callAgent(msg);
+        }
+
+        // ── OPEN / CLOSE CHAT ─────────────────────────────────────────────────────
+        function openChat(title, blockLabel, activeBlock, activeAgent) {
+            currentProject = title;
+            currentThreadId = null;
+            currentAgentIndex = Math.max(0, activeAgent - 1);
+            currentAgentId = AGENT_IDS[AGENT_NAMES[activeAgent - 1]] || AGENT_IDS['Document Classifier'];
+            openChatPage(title, blockLabel, activeBlock, activeAgent);
+            addAgentMessage('Welcome back to your ISDP project. How can I help you continue?');
+        }
+
+        function openChatPage(title, blockLabel, activeBlock, activeAgent) {
+            document.getElementById('chat-messages').innerHTML = '';
+            document.getElementById('chat-title').textContent = title;
+            document.getElementById('chat-block').textContent = blockLabel;
+            document.getElementById('chat-page').classList.add('open');
+            document.getElementById('dashboard-page').style.display = 'none';
+            updateSidebar(activeBlock || 1, activeAgent || 1);
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('sb' + i).style.display = (i === (activeBlock || 1)) ? 'block' : 'none';
+            }
+        }
+
+        function closeChat() {
+            document.getElementById('chat-page').classList.remove('open');
+            document.getElementById('dashboard-page').style.display = '';
+        }
+
+        // ── SEND MESSAGE ──────────────────────────────────────────────────────────
+        async function sendMessage() {
+            if (isSending) return;
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            addUserMessage(text);
+            input.value = '';
+            input.style.height = 'auto';
+            await callAgent(text);
+        }
+
+        // ── CORE API CALL ─────────────────────────────────────────────────────────
+        async function callAgent(message) {
+            if (isSending) return;
+            isSending = true;
+            setSendDisabled(true);
+            showConnecting('Agent is thinking…');
+            addTypingIndicator();
+            document.getElementById('next-step-card')?.remove();
+
+            try {
+                const res = await fetch(`${BACKEND}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        agent_id: currentAgentId,
+                        message: message,
+                        thread_id: currentThreadId || undefined,
+                    }),
+                });
+
+                const data = await res.json();
+                removeTypingIndicator();
+                hideConnecting();
+
+                if (!res.ok) {
+                    addErrorMessage(data.detail || data.error || `Server error ${res.status}`);
+                } else {
+                    if (data.thread_id) currentThreadId = data.thread_id;
+                    addAgentMessage(data.response);
+                    // Persist this agent's latest output for context hand-off to next agent
+                    const agentName = AGENT_SEQUENCE[currentAgentIndex]?.name || 'Agent';
+                    const existing = agentOutputHistory.findIndex(o => o.name === agentName);
+                    if (existing >= 0) agentOutputHistory[existing].output = data.response;
+                    else agentOutputHistory.push({ name: agentName, output: data.response });
+                    if (agentName === 'German Draft') addWordDownloadCard(data.response);
+                    addNextStepSuggestion();
+                }
+
+            } catch (err) {
+                removeTypingIndicator();
+                hideConnecting();
+                addErrorMessage('Backend not reachable. Is the server running on port 8000?');
+            }
+
+            isSending = false;
+            setSendDisabled(false);
+        }
+
+        // ── CHAT FILE UPLOAD ──────────────────────────────────────────────────────
+        async function handleChatFiles(files) {
+            if (!files.length) return;
+            document.getElementById('chat-file-input').value = '';
+            const uploads = [];
+            for (const file of Array.from(files)) {
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+                if (!SUPPORTED_EXTS.includes(ext)) {
+                    addErrorMessage(`"${file.name}": Bilddateien direkt hochladen wird nicht unterstützt. PDFs die Bilder enthalten können normal hochgeladen werden — speichere zuerst als PDF oder Word.`);
+                    continue;
+                }
+                try {
+                    const fd = new FormData();
+                    fd.append('file', file);
+                    const res = await fetch(`${BACKEND}/api/upload`, { method: 'POST', body: fd });
+                    const data = await res.json();
+                    if (res.ok) uploads.push({ filename: data.filename, text: data.text, chars: data.chars });
+                    else addErrorMessage(`Upload fehlgeschlagen: ${file.name}`);
+                } catch (e) {
+                    addErrorMessage(`Upload fehlgeschlagen: ${e.message}`);
+                }
+            }
+            if (!uploads.length) return;
+            let msg = uploads.length === 1
+                ? `Ich lade ein weiteres Dokument hoch:\n`
+                : `Ich lade ${uploads.length} weitere Dokumente hoch:\n`;
+            for (const f of uploads) {
+                msg += `\n--- ${f.filename} (${f.chars} Zeichen) ---\n${f.text}\n`;
+            }
+            msg += `\nBitte berücksichtige diese Dokumente in deiner Analyse.`;
+            addUserMessage(`📎 ${uploads.map(f => f.filename).join(', ')}`);
+            await callAgent(msg);
+        }
+
+        // ── UI HELPERS ────────────────────────────────────────────────────────────
+        function setSendDisabled(v) {
+            document.getElementById('send-btn').disabled = v;
+            document.getElementById('chat-input').disabled = v;
+            document.getElementById('upload-chat-btn').disabled = v;
+        }
+
+        function showConnecting(text) {
+            document.getElementById('conn-text').textContent = text;
+            document.getElementById('connecting-bar').style.display = 'flex';
+        }
+
+        function hideConnecting() {
+            document.getElementById('connecting-bar').style.display = 'none';
+        }
+
+        function addUserMessage(text) {
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'msg user';
+            el.innerHTML = `
+        <div class="msg-avatar">Me</div>
+        <div class="msg-body">
+          <div class="msg-label">You</div>
+          <div class="msg-bubble">${escHtml(text)}</div>
+        </div>`;
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function addAgentMessage(text) {
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'msg agent';
+            el.innerHTML = `
+        <div class="msg-avatar">AI</div>
+        <div class="msg-body">
+          <div class="msg-label">ISDP Agent</div>
+          <div class="msg-bubble">${renderMarkdown(text)}</div>
+        </div>`;
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function addErrorMessage(text) {
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'msg error';
+            el.innerHTML = `<div class="msg-bubble">⚠ ${escHtml(text)}</div>`;
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'msg agent';
+            el.id = 'typing-msg';
+            el.innerHTML = `
+        <div class="msg-avatar">AI</div>
+        <div class="msg-body">
+          <div class="typing-bubble">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>`;
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            document.getElementById('typing-msg')?.remove();
+        }
+
+        function escHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        // ── MARKDOWN RENDERER ─────────────────────────────────────────────────────
+        function renderInline(text) {
+            let s = escHtml(text);
+            s = s.replace(/&lt;br&gt;/g, '<br>');
+            s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            s = s.replace(/_(.+?)_/g, '<em>$1</em>');
+            s = s.replace(/`(.+?)`/g, '<code>$1</code>');
+            return s;
+        }
+
+        function renderTable(tableLines) {
+            const dataLines = tableLines.filter(l => !/^[\|\s\-:]+$/.test(l.trim()));
+            if (!dataLines.length) return '';
+            let html = '<table class="md-table">';
+            dataLines.forEach((line, idx) => {
+                const cells = line.split('|').slice(1, -1);
+                const tag = idx === 0 ? 'th' : 'td';
+                html += '<tr>' + cells.map(c => `<${tag}>${renderInline(c.trim())}</${tag}>`).join('') + '</tr>';
+            });
+            return html + '</table>';
+        }
+
+        function renderMarkdown(text) {
+            const lines = String(text).split('\n');
+            let html = '';
+            let i = 0;
+            while (i < lines.length) {
+                const line = lines[i];
+                // Table
+                if (line.trim().startsWith('|') && line.includes('|')) {
+                    const tableLines = [];
+                    while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].includes('|')) {
+                        tableLines.push(lines[i]);
+                        i++;
+                    }
+                    html += renderTable(tableLines);
+                    continue;
+                }
+                // Headers
+                const h3m = line.match(/^### (.+)/);
+                const h2m = line.match(/^## (.+)/);
+                const h1m = line.match(/^# (.+)/);
+                if (h3m) { html += `<h5>${renderInline(h3m[1])}</h5>`; i++; continue; }
+                if (h2m) { html += `<h4>${renderInline(h2m[1])}</h4>`; i++; continue; }
+                if (h1m) { html += `<h3>${renderInline(h1m[1])}</h3>`; i++; continue; }
+                // Bullet list (tolerates leading spaces and blank lines between items)
+                if (/^\s*[-*] /.test(line)) {
+                    html += '<ul>';
+                    while (i < lines.length) {
+                        if (/^\s*[-*] /.test(lines[i])) {
+                            html += `<li>${renderInline(lines[i].replace(/^\s*[-*] /, ''))}</li>`;
+                            i++;
+                        } else if (lines[i].trim() === '' && i + 1 < lines.length && /^\s*[-*] /.test(lines[i + 1])) {
+                            i++; // skip single blank line between items
+                        } else {
+                            break;
+                        }
+                    }
+                    html += '</ul>';
+                    continue;
+                }
+                // Numbered list (tolerates leading spaces and blank lines between items)
+                if (/^\s*\d+\. /.test(line)) {
+                    html += '<ol>';
+                    while (i < lines.length) {
+                        if (/^\s*\d+\. /.test(lines[i])) {
+                            html += `<li>${renderInline(lines[i].replace(/^\s*\d+\. /, ''))}</li>`;
+                            i++;
+                        } else if (lines[i].trim() === '' && i + 1 < lines.length && /^\s*\d+\. /.test(lines[i + 1])) {
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+                    html += '</ol>';
+                    continue;
+                }
+                // Empty line
+                if (line.trim() === '') { html += '<br>'; i++; continue; }
+                // Normal paragraph
+                html += `<p>${renderInline(line)}</p>`;
+                i++;
+            }
+            return html;
+        }
+
+        // ── WORD DOWNLOAD (ISDP-Draft) ────────────────────────────────────────────
+        function addWordDownloadCard(draftText) {
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'download-card';
+            el.innerHTML = `
+        <div class="download-card-inner">
+          <div class="download-card-meta">
+            <div class="download-card-eyebrow">ISDP-Entwurf bereit</div>
+            <div class="download-card-name">📄 ISDP-Draft als Word-Dokument</div>
+            <div class="download-card-sub">Basiert auf der ISDS-Vorlage und enthält den generierten Entwurf.</div>
+          </div>
+          <div class="download-card-actions">
+            <button class="download-btn" type="button">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v8M4.5 7L8 10.5 11.5 7M3 13.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Word herunterladen
+            </button>
+          </div>
+        </div>`;
+            const btn = el.querySelector('.download-btn');
+            btn.addEventListener('click', () => downloadIsdpDocx(btn, draftText));
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        async function downloadIsdpDocx(btn, draftText) {
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = 'Wird erzeugt…';
+            try {
+                const res = await fetch(`${BACKEND}/api/generate-isdp-docx`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        project_name: currentProject || 'ISDP',
+                        draft_text: draftText,
+                    }),
+                });
+                if (!res.ok) {
+                    let detail = `Server error ${res.status}`;
+                    try { const j = await res.json(); detail = j.detail || j.error || detail; } catch (_) { }
+                    throw new Error(detail);
+                }
+                const cd = res.headers.get('Content-Disposition') || '';
+                const m = cd.match(/filename="?([^"]+)"?/i);
+                const filename = m ? m[1] : `ISDP_Draft_${(currentProject || 'ISDP').replace(/[^A-Za-z0-9_-]+/g, '_')}.docx`;
+                const parsed = parseInt(res.headers.get('X-Sections-Parsed') || '0', 10);
+                const filled = parseInt(res.headers.get('X-Sections-Filled') || '0', 10);
+                const total = parseInt(res.headers.get('X-Sections-Total') || '0', 10);
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                if (total > 0) {
+                    const meta = btn.closest('.download-card-inner')?.querySelector('.download-card-sub');
+                    if (meta) {
+                        meta.textContent = filled === 0
+                            ? `⚠ Keines der ${total} Vorlagekapitel konnte befüllt werden — der Entwurf folgte nicht dem erwarteten Format. Tipp: Schritt "German Draft" nochmal ausführen.`
+                            : `${filled} von ${total} Vorlagekapiteln befüllt (${parsed} Abschnitte erkannt).`;
+                    }
+                }
+            } catch (err) {
+                addErrorMessage('Word-Download fehlgeschlagen: ' + (err.message || err));
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+            }
+        }
+
+        // ── NEXT STEP SUGGESTION ──────────────────────────────────────────────────
+        function addNextStepSuggestion() {
+            const nextIdx = currentAgentIndex + 1;
+            if (nextIdx >= AGENT_SEQUENCE.length) return;
+            const next = AGENT_SEQUENCE[nextIdx];
+            const msgs = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'next-step-card';
+            el.id = 'next-step-card';
+            el.innerHTML = `
+        <div class="next-step-inner">
+          <div class="next-step-meta">
+            <div class="next-step-eyebrow">Nächster Schritt</div>
+            <div class="next-step-name">${escHtml(next.name)}</div>
+            <div class="next-step-block">Block ${next.block} · ${escHtml(next.blockName)}</div>
+          </div>
+          <div class="next-step-actions">
+            <span class="next-step-dismiss" onclick="document.getElementById('next-step-card')?.remove()">Weiter chatten</span>
+            <button class="btn-primary" onclick="advanceToAgent(${nextIdx})">
+              Weiter → ${escHtml(next.name)}
+            </button>
+          </div>
+        </div>`;
+            msgs.appendChild(el);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function advanceToAgent(idx) {
+            document.getElementById('next-step-card')?.remove();
+            currentAgentIndex = idx;
+            currentThreadId = null;
+            const agent = AGENT_SEQUENCE[idx];
+            currentAgentId = AGENT_IDS[agent.name];
+
+            // Update topbar badge
+            document.getElementById('chat-block').textContent = `Block ${agent.block} · ${agent.name}`;
+
+            // Update sidebar
+            const agentNum = idx + 1;
+            updateSidebar(agent.block, agentNum);
+            for (let b = 1; b <= 5; b++) {
+                document.getElementById('sb' + b).style.display = (b === agent.block) ? 'block' : 'none';
+            }
+
+            // Build context preamble: project info + uploaded docs + all previous agent outputs
+            let preamble = `Projekt: "${currentProject}"`;
+            if (projectDesc) preamble += `\nProjektbeschreibung: "${projectDesc}"`;
+            if (uploadedFiles.length > 0) {
+                preamble += `\n\nHochgeladene Dokumente (${uploadedFiles.length}):`;
+                for (const f of uploadedFiles) {
+                    const txt = f.text.length > 1500 ? f.text.substring(0, 1500) + '\n[...]' : f.text;
+                    preamble += `\n\n--- ${f.filename} ---\n${txt}`;
+                }
+            }
+            if (agentOutputHistory.length > 0) {
+                preamble += `\n\nBisherige Analyseergebnisse:`;
+                for (const h of agentOutputHistory) {
+                    const txt = h.output.length > 2000 ? h.output.substring(0, 2000) + '\n[...]' : h.output;
+                    preamble += `\n\n=== ${h.name} ===\n${txt}`;
+                }
+            }
+
+            // Agent-specific task instruction
+            const introFn = AGENT_INTROS[idx];
+            const task = introFn
+                ? introFn(currentProject)
+                : `Bitte erkläre kurz, was du in diesem Schritt (${agent.name}) tun wirst, und beginne direkt.`;
+
+            addUserMessage(`→ Weiter zu: ${agent.name}`);
+            callAgent(preamble + '\n\n---\n\n' + task);
+        }
+
+        // ── SIDEBAR ───────────────────────────────────────────────────────────────
+        function updateSidebar(activeBlock, activeAgent) {
+            for (let b = 1; b <= 5; b++) {
+                const el = document.getElementById('wn' + b);
+                if (!el) continue;
+                if (b < activeBlock) { el.className = 'ws-num n-done'; el.textContent = '✓'; }
+                else if (b === activeBlock) { el.className = 'ws-num n-active'; el.textContent = b; }
+                else { el.className = 'ws-num n-pend'; el.textContent = b; }
+            }
+            for (let a = 1; a <= 18; a++) {
+                const el = document.getElementById('wa' + a);
+                if (!el) continue;
+                const dot = el.querySelector('.ws-dot');
+                if (a < activeAgent) { dot.className = 'ws-dot d-done'; el.className = 'ws-agent a-done'; }
+                else if (a === activeAgent) { dot.className = 'ws-dot d-active'; el.className = 'ws-agent a-active'; }
+                else { dot.className = 'ws-dot d-pend'; el.className = 'ws-agent'; }
+            }
+        }
+
+        function toggleSb(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>
