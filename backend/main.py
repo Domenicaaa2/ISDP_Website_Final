@@ -71,9 +71,46 @@ async def upload_file(file: UploadFile = File(...)):
         if filename.lower().endswith(".pdf"):
             import pypdf
             reader = pypdf.PdfReader(io.BytesIO(content))
-            text = "\n\n".join(
-                page.extract_text() for page in reader.pages if page.extract_text()
-            )
+
+            # Build page-index → chapter title map from PDF bookmarks/outline
+            chapter_map: dict = {}
+            try:
+                def _walk_outline(items: list, depth: int = 0) -> None:
+                    for item in items:
+                        if isinstance(item, list):
+                            _walk_outline(item, depth + 1)
+                        elif hasattr(item, "title"):
+                            try:
+                                page_idx = reader.get_destination_page_number(item)
+                                chapter_map.setdefault(page_idx, item.title)
+                            except Exception:
+                                pass
+                _walk_outline(reader.outline)
+            except Exception:
+                pass
+
+            # Extract text page by page, inserting [Kapitel: ...] markers when
+            # the bookmark map says a new chapter starts on this page.
+            chunks: list = []
+            for page_idx, page in enumerate(reader.pages):
+                if page_idx in chapter_map:
+                    chunks.append(f"[Kapitel: {chapter_map[page_idx]}]")
+                page_text = page.extract_text()
+                if page_text:
+                    chunks.append(page_text)
+            text = "\n\n".join(chunks)
+
+            # Fallback: if no bookmarks found, scan text for numbered headings
+            # (e.g. "1.2 Authentication Model") and insert [Kapitel: ...] markers.
+            if not chapter_map and text:
+                import re as _re
+                marked_lines = []
+                for line in text.split("\n"):
+                    stripped = line.strip()
+                    if _re.match(r"^\d+(\.\d+)+\s+\S", stripped) and len(stripped) < 120:
+                        marked_lines.append(f"[Kapitel: {stripped}]")
+                    marked_lines.append(line)
+                text = "\n".join(marked_lines)
         elif filename.lower().endswith((".docx", ".doc")):
             from docx import Document
             doc = Document(io.BytesIO(content))
@@ -917,11 +954,15 @@ async def generate_isdp_docx(req: DraftRequest):
 
     # Footer note about generation
     doc.add_paragraph()
+    total = len(ISDS_SECTIONS)
+    filled = len(consumed)
+    missing = total - filled
+    missing_note = f" · {missing} Kapitel ohne verfügbare Quellinformation" if missing else ""
     note = doc.add_paragraph()
     run = note.add_run(
-        f"Automatisch befüllt am {datetime.now().strftime('%d.%m.%Y %H:%M')} "
+        f"Automatisch erstellt am {datetime.now().strftime('%d.%m.%Y %H:%M')} "
         f"durch den ISDP-Assistenten (Projekt: {project}). "
-        f"Befüllte Kapitel: {len(consumed)} / {len([h for h in ISDS_SECTIONS])}."
+        f"Kapitel mit Inhalt: {filled} / {total}{missing_note}."
     )
     run.italic = True
 
