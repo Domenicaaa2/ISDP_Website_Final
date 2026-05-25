@@ -769,6 +769,45 @@ def _append_markdown_to_doc(doc, text: str) -> None:
             i += 1
             continue
 
+        # Special case: **Quellen:** → shaded citation box so references are easy to find
+        if stripped == "**Quellen:**":
+            i += 1
+            quellen_items: list = []
+            while i < n:
+                m_b = re.match(r"^\s*[-*]\s+(.+)$", lines[i])
+                if m_b:
+                    quellen_items.append(m_b.group(1).strip())
+                    i += 1
+                elif lines[i].strip() == "":
+                    i += 1
+                    break
+                else:
+                    break
+            if quellen_items:
+                from docx.oxml.ns import qn as _qn
+                from docx.oxml import OxmlElement as _OxmlElement
+                tbl = doc.add_table(rows=1, cols=1)
+                cell = tbl.rows[0].cells[0]
+                # Light gray shading
+                tc = cell._tc
+                tcPr = tc.get_or_add_tcPr()
+                shd = _OxmlElement("w:shd")
+                shd.set(_qn("w:fill"), "F0F0F0")
+                shd.set(_qn("w:color"), "auto")
+                shd.set(_qn("w:val"), "clear")
+                tcPr.append(shd)
+                # Header row: "Quellen:" bold italic
+                cell.text = ""
+                p_hdr = cell.paragraphs[0]
+                r_hdr = p_hdr.add_run("Quellen:")
+                r_hdr.bold = True
+                r_hdr.italic = True
+                # One paragraph per citation entry
+                for item in quellen_items:
+                    p_item = cell.add_paragraph()
+                    _render_inline(p_item, "  " + item)
+            continue
+
         m = re.match(r"^\*\*(.+?)\*\*\s*$", stripped)
         if m:
             p = doc.add_paragraph()
