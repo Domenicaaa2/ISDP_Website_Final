@@ -99,6 +99,18 @@ async def upload_file(file: UploadFile = File(...)):
                 if page_text:
                     chunks.append(page_text)
             text = "\n\n".join(chunks)
+
+            # Fallback: if no bookmarks found, scan text for numbered headings
+            # (e.g. "1.2 Authentication Model") and insert [Kapitel: ...] markers.
+            if not chapter_map and text:
+                import re as _re
+                marked_lines = []
+                for line in text.split("\n"):
+                    stripped = line.strip()
+                    if _re.match(r"^\d+(\.\d+)+\s+\S", stripped) and len(stripped) < 120:
+                        marked_lines.append(f"[Kapitel: {stripped}]")
+                    marked_lines.append(line)
+                text = "\n".join(marked_lines)
         elif filename.lower().endswith((".docx", ".doc")):
             from docx import Document
             doc = Document(io.BytesIO(content))
