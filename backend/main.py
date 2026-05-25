@@ -61,6 +61,81 @@ class ChatRequest(BaseModel):
 
 # ── File upload & text extraction ─────────────────────────────────────────────
 
+_HEADING_NUMBER_RE = re.compile(r"^\s*(\d+(?:\.\d+){0,5})\s+\S")
+
+
+def _looks_like_heading_text(text: str) -> bool:
+    """Heuristic: numbered heading like '4.2 Zugriffsmanagement' or ALL-CAPS short line."""
+    if not text or len(text) > 160:
+        return False
+    if _HEADING_NUMBER_RE.match(text):
+        return True
+    stripped = text.strip()
+    if 3 <= len(stripped) <= 80 and stripped == stripped.upper() and any(c.isalpha() for c in stripped):
+        return True
+    return False
+
+
+def _extract_pdf_with_markers(content: bytes) -> str:
+    """Extract PDF text with [Seite X] page markers and ## heading markers."""
+    import pypdf
+    reader = pypdf.PdfReader(io.BytesIO(content))
+    parts: list = []
+    for page_num, page in enumerate(reader.pages, start=1):
+        raw = page.extract_text() or ""
+        if not raw.strip():
+            continue
+        parts.append(f"[Seite {page_num}]")
+        for line in raw.split("\n"):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if _looks_like_heading_text(stripped):
+                parts.append(f"## {stripped}")
+            else:
+                parts.append(stripped)
+        parts.append("")
+    return "\n".join(parts)
+
+
+def _extract_docx_with_markers(content: bytes) -> str:
+    """Extract DOCX text with auto-numbered ## heading markers for Heading-style paragraphs."""
+    from docx import Document as _Document
+    doc = _Document(io.BytesIO(content))
+    parts: list = []
+    heading_counters: list = [0, 0, 0, 0, 0, 0]
+    for p in doc.paragraphs:
+        text = p.text.strip()
+        if not text:
+            continue
+        style_name = (p.style.name or "") if p.style else ""
+        if style_name.startswith("Heading "):
+            try:
+                level = int(style_name.split(" ", 1)[1])
+            except (ValueError, IndexError):
+                level = 1
+            level = max(1, min(level, 6))
+            heading_counters[level - 1] += 1
+            for j in range(level, 6):
+                heading_counters[j] = 0
+            number = ".".join(str(c) for c in heading_counters[:level] if c)
+            hashes = "#" * min(level, 4)
+            if _HEADING_NUMBER_RE.match(text):
+                parts.append(f"{hashes} {text}")
+            else:
+                parts.append(f"{hashes} {number} {text}")
+        else:
+            parts.append(text)
+    for t_idx, table in enumerate(doc.tables, start=1):
+        parts.append(f"[Tabelle {t_idx}]")
+        for row in table.rows:
+            cells = [c.text.strip().replace("\n", " ") for c in row.cells]
+            if any(cells):
+                parts.append(" | ".join(cells))
+        parts.append("")
+    return "\n".join(parts)
+
+
 @app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):
     content = await file.read()
@@ -69,52 +144,9 @@ async def upload_file(file: UploadFile = File(...)):
 
     try:
         if filename.lower().endswith(".pdf"):
-            import pypdf
-            reader = pypdf.PdfReader(io.BytesIO(content))
-
-            # Build page-index → chapter title map from PDF bookmarks/outline
-            chapter_map: dict = {}
-            try:
-                def _walk_outline(items: list, depth: int = 0) -> None:
-                    for item in items:
-                        if isinstance(item, list):
-                            _walk_outline(item, depth + 1)
-                        elif hasattr(item, "title"):
-                            try:
-                                page_idx = reader.get_destination_page_number(item)
-                                chapter_map.setdefault(page_idx, item.title)
-                            except Exception:
-                                pass
-                _walk_outline(reader.outline)
-            except Exception:
-                pass
-
-            # Extract text page by page, inserting [Kapitel: ...] markers when
-            # the bookmark map says a new chapter starts on this page.
-            chunks: list = []
-            for page_idx, page in enumerate(reader.pages):
-                if page_idx in chapter_map:
-                    chunks.append(f"[Kapitel: {chapter_map[page_idx]}]")
-                page_text = page.extract_text()
-                if page_text:
-                    chunks.append(page_text)
-            text = "\n\n".join(chunks)
-
-            # Fallback: if no bookmarks found, scan text for numbered headings
-            # (e.g. "1.2 Authentication Model") and insert [Kapitel: ...] markers.
-            if not chapter_map and text:
-                import re as _re
-                marked_lines = []
-                for line in text.split("\n"):
-                    stripped = line.strip()
-                    if _re.match(r"^\d+(\.\d+)+\s+\S", stripped) and len(stripped) < 120:
-                        marked_lines.append(f"[Kapitel: {stripped}]")
-                    marked_lines.append(line)
-                text = "\n".join(marked_lines)
+            text = _extract_pdf_with_markers(content)
         elif filename.lower().endswith((".docx", ".doc")):
-            from docx import Document
-            doc = Document(io.BytesIO(content))
-            text = "\n\n".join(p.text for p in doc.paragraphs if p.text.strip())
+            text = _extract_docx_with_markers(content)
         elif filename.lower().endswith((".txt", ".md")):
             text = content.decode("utf-8", errors="replace")
         else:
@@ -123,8 +155,8 @@ async def upload_file(file: UploadFile = File(...)):
         logger.warning("Could not extract text from %s: %s", filename, e)
         text = f"[Could not extract text: {e}]"
 
-    if len(text) > 8000:
-        text = text[:8000] + "\n\n[... document truncated ...]"
+    if len(text) > 16000:
+        text = text[:16000] + "\n\n[... document truncated ...]"
 
     logger.info("Uploaded %s (%d chars extracted)", filename, len(text))
     return {"filename": filename, "text": text, "chars": len(text)}
